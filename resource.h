@@ -1,0 +1,1 @@
+#define IDI_F1COPY_ICON 101

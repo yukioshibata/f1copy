@@ -1,0 +1,2 @@
+#include "resource.h"
+IDI_F1COPY_ICON ICON "f1copy.ico"

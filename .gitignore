@@ -1,0 +1,31 @@
+# Visual Studio
+*.obj
+*.res
+*.exe
+*.pdb
+*.log
+*.tlog
+*.lastbuildstate
+*.idb
+*.suo
+*.user
+*.ncb
+*.sdf
+*.opensdf
+*.ipch
+*.cache
+
+# Build directories
+build/
+bin/
+obj/
+x64/
+Debug/
+Release/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Temporary files
+reme.txt
