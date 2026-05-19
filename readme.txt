@@ -1,35 +1,40 @@
 F1COPY Ver 0.9 - Readme
 
-■ 概要
-F1COPYは、キーボードの操作を効率化するためのユーティリティツールです。
-F1/F2キーによるコピー＆ペースト、CapsLockのCtrl化などの機能を提供します。
+■ Overview
+F1COPY is a utility that streamlines Windows keyboard use.
+It provides copy/paste via F1/F2 keys, maps Caps Lock to Ctrl, and more.
 
-■ 主な機能
-・F1 キー        -> Ctrl+C (コピー) として動作
-・F2 キー        -> Ctrl+V (貼り付け) として動作
-・CapsLock キー  -> Ctrl キー として動作
-・ScrollLock キー -> CapsLock キー として動作
-・CapsLock + F1  -> 元々の F1 キー として動作
-・CapsLock + F2  -> 元々の F2 キー として動作
+■ Main features
+・F1 key         -> Acts as Ctrl+C (copy)
+・F2 key         -> Acts as Ctrl+V (paste)
+・Caps Lock key  -> Acts as Ctrl key
+・Scroll Lock key -> Acts as Caps Lock key
+・Caps Lock + F1 -> Acts as the original F1 key
+・Caps Lock + F2 -> Acts as the original F2 key
 
-■ 使用方法
-1. 通常起動
-   f1copy.exe を実行するとタスクトレイに常駐します。
-   起動時に設定内容が画面中央に表示されます。
+■ Usage
+1. Normal startup
+   Run f1copy.exe to keep the app in the system tray.
+   On startup, the current settings are shown at the center of the screen
+   for about 2 seconds.
 
-2. 終了方法
-   タスクトレイのアイコンをダブルクリックすると終了します。
+2. Exit
+   Double-click the tray icon to exit.
+   A short exit message is shown at the center of the screen for about
+   2 seconds before the app closes.
 
-3. インストール（自動起動設定）
-   コマンドプロンプト等から以下のコマンドを実行してください。
+3. Install (auto-start at logon)
+   Run the following from Command Prompt or similar:
    f1copy.exe -install
-   ※タスクスケジューラに登録され、PC起動時に自動で実行されるようになります。
-   ※インストール後はPCを再起動してください。
+   * Registers a Task Scheduler entry so the app runs when you sign in.
+   * If not run as administrator, it restarts with administrator rights.
+   * After install, the app starts in the tray. Reboot the PC so keyboard
+     remapping (Caps Lock / Scroll Lock) takes effect.
 
-4. アンインストール
-   コマンドプロンプト等から以下のコマンドを実行してください。
+4. Uninstall
+   Run the following from Command Prompt or similar:
    f1copy.exe -uninstall
-   ※自動起動の設定が削除されます。
+   * Removes the Task Scheduler entry and stops the running instance.
 
-■ 動作環境
-・Windows 11 64bit
+■ System requirements
+・Windows 11 64-bit
