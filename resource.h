@@ -1,1 +1,2 @@
 #define IDI_F1COPY_ICON 101
+#define ID_TRAY_EXIT    1001

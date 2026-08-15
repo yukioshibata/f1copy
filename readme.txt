@@ -1,4 +1,4 @@
-F1COPY Ver 0.91 - Readme
+F1COPY Ver 0.92 - Readme
 
 ■ Download
 Get f1copy.exe from GitHub Releases (see Assets):
@@ -23,7 +23,7 @@ It provides copy/paste via F1/F2 keys, maps Caps Lock to Ctrl, and more.
    for about 2 seconds.
 
 2. Exit
-   Double-click the tray icon to exit.
+   Right-click the tray icon and choose Exit.
    A short exit message is shown at the center of the screen for about
    2 seconds before the app closes.
 

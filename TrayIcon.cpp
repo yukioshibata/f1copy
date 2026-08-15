@@ -41,19 +41,48 @@ static bool AddTrayIconWithRetry() {
     return false;
 }
 
+static void RequestExit() {
+    SplashWnd::Show(g_hInst, SplashMode::Exit);
+}
+
+static void ShowTrayMenu() {
+    HMENU hMenu = CreatePopupMenu();
+    if (!hMenu)
+        return;
+
+    AppendMenuW(hMenu, MF_STRING, ID_TRAY_EXIT, L"Exit");
+
+    POINT pt = {0};
+    GetCursorPos(&pt);
+    SetForegroundWindow(g_hHiddenWnd);
+    UINT cmd = TrackPopupMenu(
+        hMenu,
+        TPM_RIGHTBUTTON | TPM_BOTTOMALIGN | TPM_RETURNCMD,
+        pt.x, pt.y, 0, g_hHiddenWnd, NULL);
+    DestroyMenu(hMenu);
+    PostMessageW(g_hHiddenWnd, WM_NULL, 0, 0);
+
+    if (cmd == ID_TRAY_EXIT)
+        RequestExit();
+}
+
 LRESULT CALLBACK HiddenWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     if (msg == g_uTaskbarCreatedMsg) {
         AddTrayIcon();
         return 0;
     }
     if (msg == WM_APP_TRAYMSG) {
-        if (lParam == WM_LBUTTONDBLCLK) {
-            SplashWnd::Show(g_hInst, SplashMode::Exit);
-        }
+        if (lParam == WM_RBUTTONUP || lParam == WM_CONTEXTMENU)
+            ShowTrayMenu();
+        return 0;
+    }
+    if (msg == WM_COMMAND) {
+        if (LOWORD(wParam) == ID_TRAY_EXIT)
+            RequestExit();
         return 0;
     }
     if (msg == WM_CLOSE) {
-        SplashWnd::Show(g_hInst, SplashMode::Exit);
+        RequestExit();
         return 0;
     }
     return DefWindowProc(hwnd, msg, wParam, lParam);
@@ -70,10 +99,12 @@ bool TrayIcon::Init(HINSTANCE hInstance, bool keymapPendingReboot) {
     wc.hIcon = LoadIconW(hInstance, MAKEINTRESOURCEW(IDI_F1COPY_ICON));
     RegisterClassW(&wc);
 
-    g_hHiddenWnd = CreateWindowW(
+    g_hHiddenWnd = CreateWindowExW(
+        WS_EX_TOOLWINDOW,
         wc.lpszClassName, L"f1copy Hidden Window",
-        0, 0, 0, 0, 0,
-        HWND_MESSAGE, NULL, hInstance, NULL
+        WS_POPUP,
+        0, 0, 0, 0,
+        NULL, NULL, hInstance, NULL
     );
 
     if (!g_hHiddenWnd) return false;
@@ -88,7 +119,7 @@ bool TrayIcon::Init(HINSTANCE hInstance, bool keymapPendingReboot) {
         g_nid.szTip,
         keymapPendingReboot
             ? L"キーマップが反映されていません。再起動して下さい"
-            : L"f1copy (Double click to exit)");
+            : L"f1copy (Right-click Exit)");
 
     AddTrayIconWithRetry();
     return true;
