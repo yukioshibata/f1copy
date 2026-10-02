@@ -1,0 +1,27 @@
+---
+description: Forbid creating, editing, or deleting files outside the current workspace root
+alwaysApply: true
+---
+
+# Workspace boundary (hard limit)
+
+The agent may only create, edit, delete, rename, or move files **inside the current workspace root**.
+
+## Required behavior
+
+- Treat the workspace root as a hard sandbox for all write operations (`Write`, `StrReplace`, `Delete`, `EditNotebook`, and shell redirects/moves that change files).
+- Before any write, confirm the target path resolves inside the workspace root.
+- If a fix seems to belong to another repo/folder (sibling project, shared tools, etc.):
+  1. Stop.
+  2. Tell the user which path you believe is involved.
+  3. Do **not** read-for-edit or modify that path until the user explicitly authorizes that absolute path or opens that folder as the workspace.
+- Reading outside the workspace for investigation is allowed only when needed to answer a question; it must not turn into edits.
+
+## Explicit exception
+
+Outside-workspace writes are allowed **only** when the user clearly asks for that specific path or action in the current message (for example: “edit `C:\exedrv\jobs\SaiKana\...`” or “add a global Cursor user rule”).
+
+## Examples
+
+- Workspace is `C:\exedrv\jobs\f1copy\src` and the bug looks like SaiKana → report the mismatch; do not edit SaiKana.
+- User says “SaiKana のログを直して” while f1copy is open → still ask for confirmation or ask them to open the SaiKana workspace before editing.
