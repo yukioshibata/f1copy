@@ -8,7 +8,7 @@ if (-not $vs) { throw 'Visual Studio C++ build tools were not found.' }
 $vcvars = Join-Path $vs 'VC\Auxiliary\Build\vcvars64.bat'
 if (-not (Test-Path $vcvars)) { throw "Missing $vcvars" }
 
-& (Join-Path $PSScriptRoot '_build.bat')
+& (Join-Path $PSScriptRoot '_build.bat') $vcvars
 if ($LASTEXITCODE -ne 0) { throw "Application build failed: $LASTEXITCODE" }
 
 $dist = Join-Path $PSScriptRoot 'dist'

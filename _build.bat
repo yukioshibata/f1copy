@@ -1,9 +1,31 @@
 @echo off
+setlocal EnableExtensions EnableDelayedExpansion
 set "VSCMD_START_DIR=%CD%"
-call "C:\Program Files\Microsoft Visual Studio\18\Community\Common7\Tools\VsDevCmd.bat" -arch=x64
+set "VCVARS=%~1"
+set "VSWHERE=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"
+
+if not defined VCVARS (
+    if not exist "!VSWHERE!" (
+        echo Visual Studio vswhere.exe was not found
+        exit /b 1
+    )
+    for /f "usebackq tokens=*" %%I in (`"!VSWHERE!" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`) do set "VSINSTALL=%%I"
+    if not defined VSINSTALL (
+        echo Visual Studio C++ build tools were not found
+        exit /b 1
+    )
+    set "VCVARS=!VSINSTALL!\VC\Auxiliary\Build\vcvars64.bat"
+)
+
+if not exist "!VCVARS!" (
+    echo Visual Studio environment script was not found: !VCVARS!
+    exit /b 1
+)
+
+call "!VCVARS!"
 
 if %errorlevel% neq 0 (
-    echo Visual Studio Community not found or VsDevCmd.bat failed
+    echo vcvars64.bat failed
     exit /b %errorlevel%
 )
 

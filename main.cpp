@@ -155,6 +155,10 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
             return 1;
         }
         if (!TaskReg::Install()) {
+            // Do not leave a system-wide keymap change behind when the
+            // corresponding automatic-start registration could not be made.
+            TaskReg::Uninstall();
+            ScancodeMap::Uninstall();
             ReleaseOwnedMutex(hCommandMutex);
             ShowInstallError(L"タスクスケジューラへの登録に失敗しました。");
             return 1;
